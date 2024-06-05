@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/header') %>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <%- include('./partials/navbar') %>
+      <h1>Welcome to Library! (Admin Portal)</h1>
+      <div class="dashboard">
+          <button onclick="location.href='/admin/viewbooks'">View Books</button>
+          <button onclick="location.href='/history'">View Checkin/ Checkout Requests</button>
+          <button onclick="location.href='/adminrequest'">View Admin Requests</button>
+      </div>
+      <%- include('./partials/scripts') %>
+  </body>
+</html>

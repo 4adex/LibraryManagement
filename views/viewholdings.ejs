@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Holdings</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>My Holdings</h1>
+        <% if (holdings.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Date and Time of Issue</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% holdings.forEach(function(holding) { %>
+                        <tr>
+                            <td><%= holding.title %></td>
+                            <td><%= holding.author %></td>
+                            <td><%= new Date(holding.transaction_datetime).toLocaleString() %></td>
+                            <td>
+                                <form action="/checkin/<%= holding.transaction_id %>" method="POST">
+                                    <input type="hidden" name="bookId" value="<%= holding.book_id %>">
+                                    <button type="submit">Checkin</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No books checked out.</p>
+        <% } %>
+        <button onclick="location.href='/'">Back to Dashboard</button>
+    </div>
+</body>
+</html>

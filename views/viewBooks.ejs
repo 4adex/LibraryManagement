@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Books</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Library Books</h1>
+        <div class="book-list">
+            <% if (books.length > 0) { %>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% books.forEach(function(book) { %>
+                            <tr>
+                                <td><%= book.title %></td>
+                                <td><%= book.author %></td>
+                                <td>
+                                    <form action="/checkout/<%= book.id %>" method="POST">
+                                        <input type="hidden" name="bookId" value="<%= book.id %>">
+                                        <button type="submit" <%= book.available ? '' : 'disabled' %>>
+                                            <%= book.available ? 'Checkout' : 'Not Available' %>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                <% if (msg) { %>
+                    <span><%= msg %></span>
+                <% } %>
+            <% } else { %>
+                <p>No books available in the library.</p>
+            <% } %>
+        </div>
+        <button onclick="location.href='/'">Back to Dashboard</button>
+    </div>
+    <%- include('./partials/scripts') %>
+</body>
+</html>

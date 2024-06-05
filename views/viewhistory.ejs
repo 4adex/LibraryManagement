@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/header') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Transaction History</h1>
+        <% if (transactions.length > 0) { %>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Date and Time</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach(function(transaction) { %>
+                        <tr>
+                            <td><%= transaction.title %></td>
+                            <td><%= transaction.author %></td>
+                            <td><%= new Date(transaction.transaction_datetime).toLocaleString() %></td>
+                            <td><%= transaction.transaction_type.charAt(0).toUpperCase() + transaction.transaction_type.slice(1) %></td>
+                            <td><%= transaction.is_accepted ? 'Accepted' : 'Pending' %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No transactions found.</p>
+        <% } %>
+        <button onclick="location.href='/'">Back to Dashboard</button>
+    </div>
+    <%- include('./partials/scripts') %>
+</body>
+</html>
