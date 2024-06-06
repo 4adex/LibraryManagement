@@ -12,9 +12,11 @@ router.get("/", (req, res) => {
   if (!req.user) {
     return res.redirect("/signin");
   } else if (req.user.role == "admin") {
-    return res.render("home");
+    const username = req.user.username;
+    return res.render("home", {username});
   } else {
-    return res.render("home");
+    const username = req.user.username;
+    return res.render("home", {username});
   }
 });
 

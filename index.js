@@ -39,7 +39,8 @@ app.use("/",booksRouter);
 //NEED WORK ON AUTHORIZATION
 app.use("/",adminRouter);
 app.get("/test", (req,res)=>{
-  return res.render("home2");
+  const username = req.user.username;
+  return res.render("home2", {username});
 })
 
 app.listen(PORT, () => {

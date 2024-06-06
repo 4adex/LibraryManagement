@@ -7,27 +7,44 @@
       href="https://fonts.googleapis.com/css2?family=Suwannaphum:wght@100;300;400;700;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="styles.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ShelfMaster</title>
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
       <header>
         <div class="header-content">
           <h1 class="logo">ShelfMaster</h1>
-          <button class="logout">Logout</button>
+          <div>
+            <button class="logout" onclick="location.href='/signup'">Signup</button>
+            <button class="logout" onclick="location.href='/signin'">Login</button>
+          </div>
         </div>
       </header>
       <main class="main-content">
-        <h2 class="user-call">hello hawkeye!</h2>
-        <h1>Welcome to Library!</h1>
+        <h1>Create New Account</h1>
         <div class="button-group">
-          <button onclick="location.href='/viewBooks'">View Books</button>
-          <button onclick="location.href='/history'">View History</button>
-          <button onclick="location.href='/adminrequest'">Admin Request</button>
-          <button onclick="location.href='/viewholdings'">View Holdings</button>
+          <form action="/signup" method="post">
+            <div class="form-element">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" placeholder="Enter email" />
+            </div>
+            <div class="form-element">
+              <label class="form-label">Username</label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter unique username"
+              />
+            </div>
+            <div class="form-element">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" placeholder="Password" />
+            </div>
+            <button class="submit-button" type="submit">Submit</button>
+          </form>
         </div>
       </main>
     </div>

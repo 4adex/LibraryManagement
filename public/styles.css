@@ -98,6 +98,64 @@ header {
     align-items: center;
 }
 
+.form-label {
+    color: #FFF;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.form-element {
+    width: 500px;
+}
+
+
+
+input[type=email],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border-radius: 7px;
+    border: 1px solid #878787;
+    background: #1F1E25;
+    color: #828282;
+    font-family: Suwannaphum;
+    font-size: 14px;
+    font-style: normal;
+}
+
+input[type=text],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border-radius: 7px;
+    border: 1px solid #878787;
+    background: #1F1E25;
+    color: #828282;
+    font-family: Suwannaphum;
+    font-size: 14px;
+    font-style: normal;
+}
+
+input[type=password],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border-radius: 7px;
+    border: 1px solid #878787;
+    background: #1F1E25;
+    color: #828282;
+    font-family: Suwannaphum;
+    font-size: 14px;
+    font-style: normal;
+}
+
 h1 {
     color: #FFF;
     text-align: center;
@@ -127,6 +185,7 @@ button {
 }
 
 .button-group {
+    min-width: 520px;
     max-width: 560px;
     border-radius: 13px;
     background: #151419;

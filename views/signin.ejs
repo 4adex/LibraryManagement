@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('./partials/header') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Suwannaphum:wght@100;300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signin</title>
+    <title>ShelfMaster</title>
   </head>
   <body>
-    <%- include('./partials/navbar') %>
-    <div>
-      <form action="/signin" method="POST">
-        <div class="form-group" >
-          <label for="exampleInputEmail1">Email address</label>
-          <input
-            type="email"
-            class="form-control"
-            name="email"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-          />
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <h1 class="logo">ShelfMaster</h1>
+          <div>
+            <button class="logout" onclick="location.href='/signup'">
+              Signup
+            </button>
+            <button class="logout" onclick="location.href='/signin'">
+              Login
+            </button>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            id="exampleInputPassword1"
-            placeholder="Password"
-          />
+      </header>
+      <main class="main-content">
+        <h1>Login</h1>
+        <div class="button-group">
+          <form action="/signin" method="post">
+            <div class="form-element">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" placeholder="Enter email" />
+            </div>
+            <div class="form-element">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" placeholder="Password" />
+            </div>
+            <button class="submit-button" type="submit">Submit</button>
+          </form>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </main>
     </div>
-    <%- include('./partials/scripts') %>
   </body>
 </html>

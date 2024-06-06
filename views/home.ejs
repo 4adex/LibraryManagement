@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('./partials/header') %>
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Suwannaphum:wght@100;300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>ShelfMaster</title>
   </head>
   <body>
-    <%- include('./partials/navbar') %>
-      <h1>Welcome to Library!</h1>
-      <div class="dashboard">
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <h1 class="logo">ShelfMaster</h1>
+          <button class="logout" onclick="location.href='/logout'" >Logout</button>
+        </div>
+      </header>
+      <main class="main-content">
+        <h2 class="user-call">hello <%= username %>!</h2>
+        <h1>Welcome to Library!</h1>
+        <div class="button-group">
           <button onclick="location.href='/viewBooks'">View Books</button>
           <button onclick="location.href='/history'">View History</button>
           <button onclick="location.href='/adminrequest'">Admin Request</button>
-          <button onclick="location.href='/viewholdings'">Your Holdings</button>
-      </div>
-      <%- include('./partials/scripts') %>
+          <button onclick="location.href='/viewholdings'">View Holdings</button>
+        </div>
+      </main>
+    </div>
   </body>
 </html>
