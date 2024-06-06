@@ -14,6 +14,13 @@ router.get("/viewBooks", async (req, res) => {
   res.render("viewBooks", { books, msg });
 });
 
+router.get("/bookstest", async (req, res) => {
+  const books = await fetchAllBooks();
+  const msg = null;
+  const username = req.user.username;
+  res.render("home2", { books, msg, username });
+});
+
 router.post("/checkout/:id", async (req, res) => {
   const books = await fetchAllBooks();
   const msg = await handlecheckoutrequest(req);

@@ -195,6 +195,16 @@ button {
     padding: 40px 15px 40px;
 }
 
+.content {
+    width: 600px;
+    border-radius: 13px;
+    background: #151419;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 40px 15px 40px;
+}
+
 .button-group button {
     margin: 5px;
     border-radius: 10px;
@@ -211,21 +221,38 @@ button {
     /* flex-shrink: 0; */
 }
 
+.table-button {
+    margin: 5px;
+    border-radius: 7px;
+    background: #4C71F1;
+    width: 120px;
+    height: 40px;
+    color: #FFF;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
 .alert {
-    padding: 15px;
+    padding: 20px;
+    margin-top: 20px;
     margin-bottom: 20px;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: 22px;
+    /* width:100%; */
 }
 
 .alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
+    color: #82D365;
+    border: 1px solid #82D365;
+    background: #1A4213;
 }
 
 .alert-error {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
+    color: #D36565;
+    border: 1px solid #D36565;
+    background: #461919;
 }

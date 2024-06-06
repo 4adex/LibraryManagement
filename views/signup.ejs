@@ -23,6 +23,11 @@
           </div>
         </div>
       </header>
+      <% if (locals.msg) { %>
+        <div class="alert <%= type === 'success' ? 'alert-success' : 'alert-error' %>">
+            <%= msg %>
+        </div>
+    <% } %>
       <main class="main-content">
         <h1>Create New Account</h1>
         <div class="button-group">

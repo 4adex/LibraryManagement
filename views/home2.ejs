@@ -18,33 +18,48 @@
         <div class="header-content">
           <h1 class="logo">ShelfMaster</h1>
           <div>
-            <button class="logout" onclick="location.href='/signup'">Signup</button>
-            <button class="logout" onclick="location.href='/signin'">Login</button>
+            <span class="logout"><%= username %></span>
+            <button class="logout" onclick="location.href='/logout'">Logout</button>
           </div>
         </div>
       </header>
+      <% if (locals.msg) { %>
+        <div class="alert <%= type === 'success' ? 'alert-success' : 'alert-error' %>">
+            <%= msg %>
+        </div>
+    <% } %>
       <main class="main-content">
-        <h1>Create New Account</h1>
-        <div class="button-group">
-          <form action="/signup" method="post">
-            <div class="form-element">
-              <label class="form-label">Email</label>
-              <input type="email" name="email" placeholder="Enter email" />
-            </div>
-            <div class="form-element">
-              <label class="form-label">Username</label>
-              <input
-                type="text"
-                name="username"
-                placeholder="Enter unique username"
-              />
-            </div>
-            <div class="form-element">
-              <label class="form-label">Password</label>
-              <input type="password" name="password" placeholder="Password" />
-            </div>
-            <button class="submit-button" type="submit">Submit</button>
-          </form>
+        <h1>Library Books</h1>
+        <div class="content">
+          <% if (books.length > 0) { %>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% books.forEach(function(book) { %>
+                        <tr>
+                            <td><%= book.title %></td>
+                            <td><%= book.author %></td>
+                            <td>
+                                <form action="/checkout/<%= book.id %>" method="POST">
+                                    <input type="hidden" name="bookId" value="<%= book.id %>">
+                                    <button type="submit" class="table-button">
+                                        <%= book.available ? 'Checkout' : 'Not Available' %>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No books available in the library.</p>
+        <% } %>
         </div>
       </main>
     </div>
