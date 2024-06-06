@@ -15,7 +15,7 @@ async function handlecheckoutrequest(req) {
     .replace("T", " ");
 
   const query =
-    "INSERT INTO `transactions`(`user_id`, `book_id`, `transaction_datetime`,`transaction_type`) VALUES (?,?,?,?)";
+    "INSERT INTO `transactions`(`user_id`, `book_id`, `status`,`checkout_time`) VALUES (?,?,?,?)";
   const [rows, fields] = await promisePool.query(query, [
     userid,
     bookid,

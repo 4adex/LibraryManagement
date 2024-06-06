@@ -49,7 +49,7 @@ body {
 
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -196,7 +196,7 @@ button {
 }
 
 .content {
-    width: 600px;
+    width: 800px;
     border-radius: 13px;
     background: #151419;
     display: flex;
@@ -204,6 +204,35 @@ button {
     flex-wrap: wrap;
     padding: 40px 15px 40px;
 }
+
+.table-td{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#unavailable{
+    color: #D36565;
+}
+
+#disabled-button{
+    background: #363534;
+    color: #898383;
+}
+
+#author {
+    color: #939393;
+}
+
+#status {
+    color: #939393;
+}
+
+#date{
+    color: #939393;
+    font-size: 12px;
+}
+
+
 
 .button-group button {
     margin: 5px;

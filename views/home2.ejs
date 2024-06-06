@@ -18,7 +18,7 @@
         <div class="header-content">
           <h1 class="logo">ShelfMaster</h1>
           <div>
-            <span class="logout"><%= username %></span>
+            <button class="logout" onclick="location.href='/'"><%= username %></button>
             <button class="logout" onclick="location.href='/logout'">Logout</button>
           </div>
         </div>
@@ -29,36 +29,59 @@
         </div>
     <% } %>
       <main class="main-content">
-        <h1>Library Books</h1>
+        <h1>User History Log</h1>
         <div class="content">
-          <% if (books.length > 0) { %>
-            <table class="table table-striped">
+          <% if (transactions.length > 0) { %>
+            <table>
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Checkout Date</th>
+                        <th>Return Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% books.forEach(function(book) { %>
+                    <% transactions.forEach(function(transaction) { %>
                         <tr>
-                            <td><%= book.title %></td>
-                            <td><%= book.author %></td>
-                            <td>
-                                <form action="/checkout/<%= book.id %>" method="POST">
-                                    <input type="hidden" name="bookId" value="<%= book.id %>">
+                            <td class="table-td"><%= transaction.title %></td>
+                            <td class="table-td"><%= transaction.status %></td>
+                            <td class="table-td" id="date"><%= transaction.checkout_time %></td>
+                            <% if (transaction.checkin_time) { %>
+                              <td class="table-td"><%= transaction.checkin_time %></td>
+                             <% } else { %>
+                              <td class="table-td" id="date">N.A.</td>
+                            <% } %>
+                            
+                            
+                              <% if (transaction.status=="checkout_accepted") { %>
+                              <td class="table-td">
+                                <form action="/checkin/<%= transaction.transaction_id %>" method="POST">
+                                    <input type="hidden" name="Id" value="<%= transaction.id %>">
                                     <button type="submit" class="table-button">
-                                        <%= book.available ? 'Checkout' : 'Not Available' %>
+                                      Checkin
                                     </button>
                                 </form>
                             </td>
+                              <% }else{ %>
+                            
+                              <td class="table-td">
+                                <form>
+                                    <input type="hidden" name="Id" value="<%= transaction.id %>">
+                                    <button type="submit" class="table-button" id="disabled-button" disabled>
+                                      None
+                                    </button>
+                                </form>
+                            </td>
+                              <% } %>
+                            
                         </tr>
                     <% }); %>
                 </tbody>
             </table>
         <% } else { %>
-            <p>No books available in the library.</p>
+            <p>No transactions forund for the user.</p>
         <% } %>
         </div>
       </main>
