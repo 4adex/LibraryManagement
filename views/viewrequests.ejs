@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Requests</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pending Requests</h1>
+        <% if (msg) { %>
+            <div class="alert <%= type === 'success' ? 'alert-success' : 'alert-error' %>">
+                <%= msg %>
+            </div>
+        <% } %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Transaction Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% requests.forEach(request => { %>
+                    <tr>
+                        <td><%= request.username %></td>
+                        <td><%= request.title %></td>
+                        <td><%= request.author %></td>
+                        <td><%= request.transaction_datetime %></td>
+                        <td><%= request.transaction_type %></td>
+                        <td><%= request.is_accepted %></td>
+                        <td>
+                            <form action="/admin/transaction/<%= request.id %>/accepted" method="POST" style="display:inline-block;">
+                                <button type="submit">Accept</button>
+                            </form>
+                            <form action="/admin/transaction/<%= request.id %>/rejected" method="POST" style="display:inline-block;">
+                                <button type="submit">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <button onclick="location.href='/admin'">Back to Admin Dashboard</button>
+    </div>
+</body>
+</html>

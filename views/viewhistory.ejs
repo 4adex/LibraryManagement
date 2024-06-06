@@ -28,7 +28,7 @@
                             <td><%= transaction.author %></td>
                             <td><%= new Date(transaction.transaction_datetime).toLocaleString() %></td>
                             <td><%= transaction.transaction_type.charAt(0).toUpperCase() + transaction.transaction_type.slice(1) %></td>
-                            <td><%= transaction.is_accepted ? 'Accepted' : 'Pending' %></td>
+                            <td><%= transaction.is_accepted %></td>
                         </tr>
                     <% }); %>
                 </tbody>
