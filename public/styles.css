@@ -1,104 +1,155 @@
-body {
-    font-family: Arial, sans-serif;
+/* Reset default styles */
+* {
     margin: 0;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-    height: 100vh;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* max-width: 800px; */
-    width: 100%;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    color: #333;
-}
-
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.dashboard button,
-.book-list button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-}
-
-.dashboard button:hover,
-.book-list button:hover {
-    background-color: #0056b3;
-}
-
-.book-list {
-    width: 100%;
-    margin: 20px 0;
-}
-
-.book-list ul {
-    list-style-type: none;
     padding: 0;
-}
-
-.book-list li {
-    background-color: #f9f9f9;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 8px;
     box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    padding-top: 100px;
+    align-items: center;
+    font-family: "Suwannaphum", serif;
+    background: #0C0B10;
+    color: #fff;
+
+}
+
+.suwannaphum-thin {
+    font-family: "Suwannaphum", serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.suwannaphum-light {
+    font-family: "Suwannaphum", serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.suwannaphum-regular {
+    font-family: "Suwannaphum", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.suwannaphum-bold {
+    font-family: "Suwannaphum", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.suwannaphum-black {
+    font-family: "Suwannaphum", serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    border-radius: 22px;
+    background: #1F1E25;
+    padding: 10px 30px 10px;
+}
+
+.logo {
+    color: #4C71F1;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.logout {
+    color: #4C71F1;
+    background: none;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.user-call {
+    color: #818181;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    color: #FFF;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
 button {
-    padding: 10px 15px;
+    padding: 8px 16px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #0056b3;
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 22px;
+    background: #1F1E25;
+}
+
+.button-group {
+    max-width: 560px;
+    border-radius: 13px;
+    background: #151419;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 40px 15px 40px;
+}
+
+.button-group button {
+    margin: 5px;
+    border-radius: 10px;
+    background: #4C71F1;
+    width: 240px;
+    height: 50px;
+    color: #FFF;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    /* flex-shrink: 0; */
 }
 
 .alert {

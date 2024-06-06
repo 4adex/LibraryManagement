@@ -28,3 +28,11 @@ CREATE TABLE transactions (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (book_id) REFERENCES books(id)
 );
+
+
+CREATE TABLE admin_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    status VARCHAR(20) DEFAULT 'pending',
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
