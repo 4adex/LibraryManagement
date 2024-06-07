@@ -265,6 +265,22 @@ button {
     line-height: normal;
 }
 
+.admin-button{
+    margin: 5px;
+    border-radius: 7px;
+    background: #4C71F1;
+    width: 140px;
+    height: 60px;
+    color: #FFF;
+    text-align: center;
+    font-family: Suwannaphum;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+}
+
 .alert {
     padding: 20px;
     margin-top: 20px;

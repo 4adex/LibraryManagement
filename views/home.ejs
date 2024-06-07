@@ -20,13 +20,18 @@
           <button class="logout" onclick="location.href='/logout'" >Logout</button>
         </div>
       </header>
+      <% if (locals.msg) { %>
+        <div class="alert <%= type === 'success' ? 'alert-success' : 'alert-error' %>">
+            <%= msg %>
+        </div>
+    <% } %>
       <main class="main-content">
         <h2 class="user-call">hello <%= username %>!</h2>
         <h1>Welcome to Library!</h1>
         <div class="button-group">
           <button onclick="location.href='/viewBooks'">View Books</button>
           <button onclick="location.href='/history'">View History</button>
-          <button onclick="location.href='/adminrequest'">Admin Request</button>
+          <button onclick="location.href='/reqadmin'">Admin Request</button>
           <button onclick="location.href='/viewholdings'">View Holdings</button>
         </div>
       </main>

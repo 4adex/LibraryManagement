@@ -19,7 +19,11 @@ router.get("/", (req, res) => {
     return res.render("home", {username});
   } else {
     const username = req.user.username;
-    return res.render("home", {username});
+    const msg = req.session.msg;
+    const type = req.session.type;
+    req.session.msg = null;
+    req.session.type = null;
+    return res.render("home", {username, msg, type});
   }
 });
 

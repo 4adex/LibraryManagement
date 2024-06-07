@@ -1,13 +1,7 @@
 const { Router } = require("express");
 const router = Router();
-const {
-  fetchAllBooks,
-  fetchCheckedOutBooksByUserId,
-  handlecheckinrequest,
-} = require("../controllers/books");
 const promisePool = require("../config/database");
 
-//This route is completed
 router.get("/viewBooks", async (req, res) => {
   try {
     const query = "SELECT * FROM `books`";
@@ -25,17 +19,8 @@ router.get("/viewBooks", async (req, res) => {
   }
 });
 
-//Route was for testing purposes
-router.get("/bookstest", async (req, res) => {
-  const books = await fetchAllBooks();
-  const msg = null;
-  const username = req.user.username;
-  res.render("home2", { books, msg, username });
-});
-
 //This route is also done now
 router.post("/checkout/:id", async (req, res) => {
-  // const books = await fetchAllBooks();
   const bookid = req.params.id;
   const userid = req.user.id;
   const currentDatetime = new Date()
@@ -75,20 +60,34 @@ router.get("/history", async (req, res) => {
     const msg = req.session.msg;
     const type = req.session.type;
     req.session.msg = null;
-    req.session.type = null;
-    return res.render("home2", { username, transactions, msg, type });
+    req.session.type = null; 
+    return res.render("viewhistory", { username, transactions, msg, type });
   } catch (error) {
     req.session.msg = "Internal Server Error";
     req.session.type = "error";
     return res.redirect("/");
   }
-  // const transactions = await fetchTransactionsByUserId(req);
-  // res.render("viewhistory", { transactions });
 });
 
 router.get("/viewholdings", async (req, res) => {
-  const holdings = await fetchCheckedOutBooksByUserId(req);
-  res.render("viewholdings", { holdings });
+  try {
+    const userId = req.user.id;
+    const username = req.user.username;
+    const query = `SELECT t.transaction_id, b.title, b.author, t.checkout_time
+    FROM books b
+    JOIN transactions t ON b.id = t.book_id
+    WHERE t.status IN ('checkout_accepted', 'checkin_requested') AND t.user_id = ?;`
+    const [transactions] = await promisePool.query(query, [userId]);
+    const msg = req.session.msg;
+    const type = req.session.type;
+    req.session.msg = null;
+    req.session.type = null;
+    return res.render("viewholdings", { transactions, msg, type, username });
+  } catch (error) {
+    req.session.msg = "Internal Server Error";
+    req.session.type = "error";
+    return res.redirect("/");
+  }
 });
 
 router.post("/checkin/:transactionId", async (req, res) => {
@@ -100,20 +99,79 @@ router.post("/checkin/:transactionId", async (req, res) => {
       req.session.msg = "Transaction not found";
       req.session.type = "error";
       return res.redirect("/");
-    } else if (transactions[0].status != "checkout_accepted") {
-      req.session.msg = "Transaction must be checked in first";
+    } else if (transactions[0].status == "checkin_requested") {
+      req.session.msg = "Checkin is already requested for this transaction";
       req.session.type = "error";
       return res.redirect("/");
-    }
+    } else if (transactions[0].status == "checkin_accepted") {
+      req.session.msg = "Checkin is already accepted for this transaction";
+      req.session.type = "error";
+      return res.redirect("/");
+    } else if (transactions[0].status != "checkout_accepted") {
+      req.session.msg = "Transaction must be checked out first";
+      req.session.type = "error";
+      return res.redirect("/");
+    } 
     const userId = req.user.id;
     const currentDatetime = new Date()
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
-    const query = "UDATE `transactions` SET `status` = ?, `checkin_time` = ? WHERE `transaction_id` = ?";
+    const query = "UPDATE `transactions` SET `status` = ?, `checkin_time` = ? WHERE `transaction_id` = ?";
     const [rows,fields] = await promisePool.query(query, ['checkin_requested', currentDatetime, transactionId]);
-    
-  } catch (error) {}
+    req.session.msg = "Checkin request sent successfully";
+    req.session.type = "success";
+    return res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    req.session.msg = "Internal Server Error";
+    req.session.type = "error";
+    return res.redirect("/");
+  }
 });
+
+router.post("/reqadmin", async (req,res) =>{
+  try {
+    const user_id = req.user.id;
+    const query1 = "SELECT * FROM `admin_requests` WHERE `user_id`=?";
+    const [requests] = await promisePool.query(query1,[user_id]);
+    if (requests.length != 0){
+      req.session.msg = "Request already exists"
+      req.session.type = "error"
+      return res.redirect("/");
+    }
+    const query2 = "INSERT INTO `admin_requests` (`user_id`) VALUES (?);"
+    const [rows,fields] = await promisePool.query(query2,[user_id]);
+    req.session.msg = "Request sent successfully"
+    req.session.type = "success"
+    return res.redirect("/");
+  } catch (error) {
+    req.session.msg = "Internal Server Error";
+    req.session.type = "error";
+    return res.redirect("/reqadmin");
+  }
+})
+
+router.get("/reqadmin", async (req,res) => {
+  try {
+    const user_id = req.user.id;
+    const username = req.user.username;
+    const query1 = "SELECT * FROM `admin_requests` WHERE `user_id`=?";
+    const [requests] = await promisePool.query(query1,[user_id]);
+    var request_flag = true;
+    if (requests.length ==0){
+      request_flag = false;
+    }
+    const msg = req.session.msg;
+    const type = req.session.type;
+    req.session.msg = null;
+    req.session.type = null;
+    return res.render("reqadmin", {username,msg, type, request_flag})
+  } catch (error) {
+    req.session.msg = "Internal Server Error";
+    req.session.type = "error";
+    return res.redirect("/");
+  }
+})
 
 module.exports = router;
