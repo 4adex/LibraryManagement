@@ -7,7 +7,7 @@
       href="https://fonts.googleapis.com/css2?family=Suwannaphum:wght@100;300;400;700;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ShelfMaster</title>
@@ -29,19 +29,56 @@
         </div>
     <% } %>
       <main class="main-content">
-        <h1>Request Admin</h1>
+        <h1>Requests</h1>
         <div class="content">
-          <% if (request_flag) { %>
-            <p>Your request is already sent to admin.</p>
-            <% } else { %>
-              <form action="/reqadmin" method="POST">
-                <input type="hidden" name="" value="">
-                <button type="submit" class = "admin-button">
-                  Request Admin
-                </button>
-            </form>
-          <% } %>
-            
+          <% if (transactions.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Checkout Date</th>
+                        <th>Return Date</th>
+                        <th>Accept</th>
+                        <th>Reject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach(function(transaction) { %>
+                        <tr>
+                            <td class="table-td"><%= transaction.title %></td>
+                            <td class="table-td"><%= transaction.status %></td>
+                            <td class="table-td" id="date"><%= transaction.checkout_time %></td>
+                            <% if (transaction.checkin_time) { %>
+                              <td class="table-td" id="date"><%= transaction.checkin_time %></td>
+                             <% } else { %>
+                              <td class="table-td" id="date">N.A.</td>
+                            <% } %>
+                            
+                            <td class="table-td">
+                              <form action="/admin/transaction/<%= transaction.transaction_id %>/accept" method="POST">
+                                  <input type="hidden" name="Id" value="<%= transaction.id %>">
+                                  <button type="submit" class="table-button">
+                                    Accept
+                                  </button>
+                              </form>
+                            </td>
+                            <td class="table-td">
+                              <form action="/admin/transaction/<%= transaction.transaction_id %>/reject" method="POST">
+                                  <input type="hidden" name="Id" value="<%= transaction.id %>">
+                                  <button type="submit" class="table-button">
+                                    Reject
+                                  </button>
+                              </form>
+                            </td>
+                            
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No more pending requests.</p>
+        <% } %>
         </div>
       </main>
     </div>

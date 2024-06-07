@@ -1,59 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include('./partials/header') %>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Books</title>
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Suwannaphum:wght@100;300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShelfMaster</title>
+  </head>
+  <body>
     <div class="container">
-        <h1>Library Books</h1>
-        <% if (locals.msg) { %>
-            <div class="alert <%= type === 'success' ? 'alert-success' : 'alert-error' %>">
-                <%= msg %>
-            </div>
-        <% } %>
-        <div class="book-list">
-            <% if (books.length > 0) { %>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% books.forEach(function(book) { %>
-                            <tr>
-                                <td><%= book.title %></td>
-                                <td><%= book.author %></td>
-                                <td>
-                                    <form action="delete/<%= book.id %>" method="POST">
-                                        <input type="hidden" name="bookId" value="<%= book.id %>">
-                                        <button type="submit">
-                                            Delete
-                                        </button>
-                                    </form>
-                                    <form action="update/<%= book.id %>" method="GET">
-                                        <input type="hidden" name="bookId" value="<%= book.id %>">
-                                        <button type="submit">
-                                            Update
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-            <% } else { %>
-                <p>No books available in the library.</p>
-            <% } %>
+      <header>
+        <div class="header-content">
+          <h1 class="logo">ShelfMaster</h1>
+          <div>
+            <button class="logout" onclick="location.href='/'"><%= username %></button>
+            <button class="logout" onclick="location.href='/logout'">Logout</button>
+          </div>
         </div>
-        <button onclick="location.href='/'">Back to Dashboard</button>
+      </header>
+      <% if (locals.msg) { %>
+        <div class="alert <%= type === 'success' ? 'alert-success' : 'alert-error' %>">
+            <%= msg %>
+        </div>
+    <% } %>
+      <main class="main-content">
+        <h1>Library Books</h1>
+        <div class="content">
+          <% if (books.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% books.forEach(function(book) { %>
+                        <tr>
+                            <td class="table-td"><%= book.title %></td>
+                            <td class="table-td" id="author"><%= book.author %></td>
+                            
+                              <% if (book.available_copies>0) { %>
+                                <td class="table-td" id="status">
+                               <%= book.available_copies %> copies available
+                              </td>
+                            
+                              <% }else{ %>
+                                <td class="table-td" id="unavailable">
+                                unavailable
+                              </td>
+                              
+                              <% } %>
+                              <td class="table-td">
+                                <form action="/admin/update/<%= book.id %>" method="GET">
+                                    <input type="hidden" name="bookId" value="<%= book.id %>">
+                                    <button type="submit" class="table-button">
+                                      Update
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="table-td">
+                              <form action="/admin/delete/<%= book.id %>" method="POST">
+                                  <input type="hidden" name="bookId" value="<%= book.id %>">
+                                  <button type="submit" class="table-button">
+                                    Delete
+                                  </button>
+                              </form>
+                          </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No books available in the library.</p>
+        <% } %>
+        </div>
+      </main>
     </div>
-    <%- include('./partials/scripts') %>
-</body>
+  </body>
 </html>

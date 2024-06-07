@@ -32,7 +32,7 @@ app.use(session({
 
 //ROUTES AND ROUTERS
 app.use(checkForAuthenticationCookie("token"));
-app.use(express.static(path.resolve("./public")));
+app.use(express.static(path.resolve("public")));
 app.use("/", userRouter);
 app.use("/",booksRouter);
 
