@@ -1,10 +1,19 @@
 const { Router } = require("express");
-const { fetchAllBooks } = require("../controllers/books");
 const promisePool = require("../config/database");
 
 const router = Router();
 
-router.get("/admin", (req, res) => {
+const ensureAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    return next();
+  }
+  req.session.msg = "Unauthorized Access";
+  req.session.type = "error";
+  return res.redirect('/');
+};
+router.use(ensureAdmin);
+
+router.get("/", (req, res) => {
   const username = req.user.username;
   const msg = req.session.msg;
   const type = req.session.type;
@@ -13,7 +22,7 @@ router.get("/admin", (req, res) => {
   return res.render("adminhome", { msg, type, username });
 });
 
-router.get("/admin/viewbooks", async (req, res) => {
+router.get("/viewbooks", async (req, res) => {
   try {
     const query = "SELECT * FROM `books`";
     const [books] = await promisePool.query(query);
@@ -30,7 +39,7 @@ router.get("/admin/viewbooks", async (req, res) => {
   }
 });
 
-router.get("/admin/update/:bookid", async (req, res) => {
+router.get("/update/:bookid", async (req, res) => {
   const bookId = req.params.bookid;
   try {
     const query = "SELECT * FROM books WHERE id = ?";
@@ -56,7 +65,7 @@ router.get("/admin/update/:bookid", async (req, res) => {
 });
 
 //UPDATING A BOOK
-router.post("/admin/update/:bookid", async (req, res) => {
+router.post("/update/:bookid", async (req, res) => {
   const bookId = req.params.bookid;
   const { title, author, isbn, publication_year } = req.body;
   if (!title || !author || !isbn || !publication_year) {
@@ -101,7 +110,7 @@ router.post("/admin/update/:bookid", async (req, res) => {
 });
 
 //DELETING A BOOK
-router.post("/admin/delete/:bookid", async (req, res) => {
+router.post("/delete/:bookid", async (req, res) => {
   const bookId = req.params.bookid;
   try {
     const deleteTransactionsQuery =
@@ -128,7 +137,7 @@ router.post("/admin/delete/:bookid", async (req, res) => {
   }
 });
 
-router.get("/admin/viewrequests", async (req, res) => {
+router.get("/viewrequests", async (req, res) => {
   try {
     const id = req.user.id;
     const username = req.user.username;
@@ -150,7 +159,7 @@ router.get("/admin/viewrequests", async (req, res) => {
   }
 });
 
-router.post("/admin/transaction/:id/:action", async (req, res) => {
+router.post("/transaction/:id/:action", async (req, res) => {
   const transactionId = req.params.id;
   const action = req.params.action;
 
@@ -214,7 +223,7 @@ router.post("/admin/transaction/:id/:action", async (req, res) => {
   }
 });
 
-router.get("/admin/addbook", async (req, res) => {
+router.get("/addbook", async (req, res) => {
   try {
     const username = req.user.username;
     const msg = req.session.msg;
@@ -230,7 +239,7 @@ router.get("/admin/addbook", async (req, res) => {
   }
 });
 
-router.post("/admin/addbook", async (req, res) => {
+router.post("/addbook", async (req, res) => {
   try {
     const { title, author, isbn, publication_year, total_copies } = req.body;
     if (!title || !author || !isbn || !publication_year || !total_copies) {

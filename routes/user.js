@@ -10,9 +10,8 @@ const router = Router();
 router.get("/", (req, res) => {
   if (!req.user) {
     return res.redirect("/signin");
-  } else if (req.user.role == "admin") {
-    const username = req.user.username;
-    return res.render("home", {username});
+  } else if (req.user.role === "admin") {
+    return res.redirect("/admin");
   } else {
     const username = req.user.username;
     const msg = req.session.msg;

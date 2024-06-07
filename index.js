@@ -40,7 +40,7 @@ app.use("/", userRouter);
 app.use("/",booksRouter);
 
 //NEED WORK ON AUTHORIZATION
-app.use("/",adminRouter);
+app.use("/admin",adminRouter);
 app.get("/test", (req,res)=>{
   const username = req.user.username;
   return res.render("home2", {username});

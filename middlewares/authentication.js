@@ -16,6 +16,19 @@ function checkForAuthenticationCookie(cookieName) {
   };
 }
 
+function checkAuthorization() {
+  return (req, res, next) => {
+    const role = req.user.role;
+    if (role=="client") {
+      return res.redirect("/");
+    }
+    else {
+      return next();
+    }
+  };
+}
+
 module.exports = {
   checkForAuthenticationCookie,
+  checkAuthorization
 };
