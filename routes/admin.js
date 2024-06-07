@@ -273,5 +273,49 @@ router.post("/addbook", async (req, res) => {
   }
 });
 
+router.get("/adminrequest", async (req, res) => {
+  try {
+    const query = `SELECT admin_requests.id, admin_requests.user_id, admin_requests.status, users.username
+    FROM admin_requests
+    INNER JOIN users ON admin_requests.user_id = users.id;`;
+    const [requests] = await promisePool.query(query);
+    const username = req.user.username;
+    const msg = req.session.msg;
+    const type = req.session.type;
+    req.session.msg = null;
+    req.session.type = null;
+    return res.render("adminrequest", { requests, msg, type, username });
+  } catch (error) {
+    req.session.msg = "Internal Server Error";
+    req.session.type = "error";
+    return res.redirect("/");
+  }
+});
+
+router.post("/adminrequest/:id", async (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const updateRequestQuery = "UPDATE `admin_requests` SET `status`='accepted' WHERE `id`=?";
+    await promisePool.query(updateRequestQuery, [requestId]);
+
+    const getUserQuery = "SELECT user_id FROM `admin_requests` WHERE `id`=?";
+    const [userResult] = await promisePool.query(getUserQuery, [requestId]);
+    const userId = userResult[0].user_id;
+
+    const updateUserRoleQuery = "UPDATE `users` SET `role`='admin' WHERE `id`=?";
+    await promisePool.query(updateUserRoleQuery, [userId]);
+
+    req.session.msg = "Aadmin access granted successfully";
+    req.session.type = "success";
+    return res.redirect("/admin/adminrequest");
+  } catch (error) {
+
+    req.session.msg = "Internal Server Error";
+    req.session.type = "error";
+    return res.redirect("/admin/adminrequest");
+    
+  }
+});
+
 
 module.exports = router;
