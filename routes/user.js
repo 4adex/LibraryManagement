@@ -1,11 +1,7 @@
 // There will be an login n sigup page n
-const {
-  createNewUser,
-  matchPasswordAndGenerateToken,
-} = require("../controllers/user");
 const promisePool = require("../config/database");
 const { createHmac, randomBytes } = require("crypto");
-const { createTokenForUser, validateToken } = require("../authentication");
+const { createTokenForUser} = require("../authentication");
 const { Router } = require("express");
 
 const router = Router();

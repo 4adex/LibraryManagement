@@ -8,6 +8,9 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const {checkForAuthenticationCookie} = require("./middlewares/authentication");
 const session = require('express-session');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +26,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret: 'hawkeye',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
