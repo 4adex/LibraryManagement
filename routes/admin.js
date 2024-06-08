@@ -292,28 +292,58 @@ router.get("/adminrequest", async (req, res) => {
   }
 });
 
-router.post("/adminrequest/:id", async (req, res) => {
+router.post("/adminrequest/accept/:id", async (req, res) => {
   try {
     const requestId = req.params.id;
-    const updateRequestQuery = "UPDATE `admin_requests` SET `status`='accepted' WHERE `id`=?";
-    await promisePool.query(updateRequestQuery, [requestId]);
 
     const getUserQuery = "SELECT user_id FROM `admin_requests` WHERE `id`=?";
     const [userResult] = await promisePool.query(getUserQuery, [requestId]);
+    if (userResult.length === 0) {
+      req.session.msg = "Admin request not found";
+      req.session.type = "error";
+      return res.redirect("/admin/adminrequest");
+    }
     const userId = userResult[0].user_id;
 
     const updateUserRoleQuery = "UPDATE `users` SET `role`='admin' WHERE `id`=?";
     await promisePool.query(updateUserRoleQuery, [userId]);
 
-    req.session.msg = "Aadmin access granted successfully";
+    const deleteRequestQuery = "DELETE FROM `admin_requests` WHERE `id`=?";
+    await promisePool.query(deleteRequestQuery, [requestId]);
+
+    req.session.msg = "Admin access granted successfully";
     req.session.type = "success";
     return res.redirect("/admin/adminrequest");
   } catch (error) {
-
+    console.error("Error granting admin access:", error);
     req.session.msg = "Internal Server Error";
     req.session.type = "error";
     return res.redirect("/admin/adminrequest");
-    
+  }
+});
+
+// Declining the admin request
+router.post("/adminrequest/decline/:id", async (req, res) => {
+  try {
+    const requestId = req.params.id;
+
+    const deleteRequestQuery = "DELETE FROM `admin_requests` WHERE `id`=?";
+    const [result] = await promisePool.query(deleteRequestQuery, [requestId]);
+
+    if (result.affectedRows === 0) {
+      req.session.msg = "Admin request not found";
+      req.session.type = "error";
+      return res.redirect("/admin/adminrequest");
+    }
+
+    req.session.msg = "Admin request declined successfully";
+    req.session.type = "success";
+    return res.redirect("/admin/adminrequest");
+  } catch (error) {
+    console.error("Error declining admin request:", error);
+    req.session.msg = "Internal Server Error";
+    req.session.type = "error";
+    return res.redirect("/admin/adminrequest");
   }
 });
 

@@ -35,9 +35,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>UserID</th>
+                        <th>ID</th>
                         <th>Username</th>
-                        <th>Validate</th>
+                        <th>Accept</th>
+                        <th>Reject</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,10 +47,18 @@
                             <td class="table-td"><%= request.user_id %></td>
                             <td class="table-td"><%= request.username %></td>
                               <td class="table-td">
-                                <form action="/admin/adminrequest/<%= request.id %>" method="POST">
+                                <form action="/admin/adminrequest/accept/<%= request.id %>" method="POST">
                                     <input type="hidden">
                                     <button type="submit" class="table-button">
                                       Accept
+                                    </button>
+                                </form>
+                              </td>
+                              <td class="table-td">
+                                <form action="/admin/adminrequest/decline/<%= request.id %>" method="POST">
+                                    <input type="hidden">
+                                    <button type="submit" class="table-button">
+                                      Reject
                                     </button>
                                 </form>
                               </td>
