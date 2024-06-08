@@ -35,7 +35,7 @@ router.get("/viewbooks", async (req, res) => {
   } catch (error) {
     req.session.msg = "Internal Server Error";
     req.session.type = "error";
-    return res.redirect("/");
+    return res.redirect("/admin");
   }
 });
 
@@ -155,7 +155,7 @@ router.get("/viewrequests", async (req, res) => {
   } catch (error) {
     req.session.msg = "Internal Server Error";
     req.session.type = "error";
-    return res.redirect("/");
+    return res.redirect("/admin");
   }
 });
 
@@ -288,7 +288,7 @@ router.get("/adminrequest", async (req, res) => {
   } catch (error) {
     req.session.msg = "Internal Server Error";
     req.session.type = "error";
-    return res.redirect("/");
+    return res.redirect("/admin");
   }
 });
 

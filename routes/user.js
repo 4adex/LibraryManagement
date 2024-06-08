@@ -10,15 +10,16 @@ const router = Router();
 router.get("/", (req, res) => {
   if (!req.user) {
     return res.redirect("/signin");
-  } else if (req.user.role === "admin") {
-    return res.redirect("/admin");
+  // } else if (req.user.role === "admin") {
+    // return res.redirect("/admin");
   } else {
     const username = req.user.username;
     const msg = req.session.msg;
     const type = req.session.type;
+    const role = req.user.role;
     req.session.msg = null;
     req.session.type = null;
-    return res.render("home", {username, msg, type});
+    return res.render("home", {role, username, msg, type});
   }
 });
 
@@ -63,6 +64,27 @@ router.post("/signup", async (req, res) => {
     return res.redirect("/signup");
   }
   try {
+    // Check if username or email is already taken
+    const checkQuery = "SELECT * FROM users WHERE username = ? OR email = ?";
+    const [existingUsers] = await promisePool.query(checkQuery, [
+      body.username,
+      body.email,
+    ]);
+
+    if (existingUsers.length > 0) {
+      req.session.msg = "Username or email already in use";
+      req.session.type = "error";
+      return res.redirect("/signup");
+    }
+
+    // Check if there are any existing users
+    const countQuery = "SELECT COUNT(*) AS userCount FROM users";
+    const [countResult] = await promisePool.query(countQuery);
+    const userCount = countResult[0].userCount;
+
+    // Determine the role for the new user
+    const role = userCount === 0 ? "admin" : "client";
+
     const salt = randomBytes(16).toString("hex");
     const hashedPassword = createHmac("sha256", salt)
       .update(body.password)

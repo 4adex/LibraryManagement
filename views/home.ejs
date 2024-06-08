@@ -33,6 +33,10 @@
           <button onclick="location.href='/history'">View History</button>
           <button onclick="location.href='/reqadmin'">Admin Request</button>
           <button onclick="location.href='/viewholdings'">View Holdings</button>
+          <% if (role == 'admin') { %>
+            <button onclick="location.href='/admin'">Admin Portal</button>
+          <% } %>
+          
         </div>
       </main>
     </div>
