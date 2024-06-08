@@ -7,6 +7,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     role ENUM('client', 'admin') NOT NULL,
+    request_status ENUM('pending', 'accepted', 'rejected', 'not_requested') DEFAULT 'not_requested',
     salt VARCHAR(255),
     PRIMARY KEY (id)
 );
@@ -32,12 +33,4 @@ CREATE TABLE transactions (
     PRIMARY KEY (transaction_id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (book_id) REFERENCES books(id)
-);
-
-
-CREATE TABLE admin_requests (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    status VARCHAR(20) DEFAULT 'pending',
-    FOREIGN KEY (user_id) REFERENCES users(id)
 );
