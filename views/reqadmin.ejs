@@ -31,16 +31,13 @@
       <main class="main-content">
         <h1>Request Admin</h1>
         <div class="content">
-          <% if (request_flag) { %>
-            <p>Your request is already sent to admin.</p>
-            <% } else { %>
               <form action="/reqadmin" method="POST">
                 <input type="hidden" name="" value="">
                 <button type="submit" class = "admin-button">
                   Request Admin
                 </button>
             </form>
-          <% } %>
+          
             
         </div>
       </main>

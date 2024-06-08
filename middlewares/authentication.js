@@ -10,7 +10,13 @@ function checkForAuthenticationCookie(cookieName) {
     try {
       const userPayload = validateToken(tokenCookieValue);
       req.user = userPayload;
-    } catch (error) {}
+    } catch (error) {
+      req.user = null;
+      req.session.msg = "Could not authenticate, login again.";
+      req.session.type = "error";
+      res.clearCookie(cookieName);
+      return res.redirect("/login");
+    }
 
     return next();
   };

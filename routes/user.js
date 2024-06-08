@@ -6,12 +6,10 @@ const { Router } = require("express");
 
 const router = Router();
 
-//This is the main dashboard that someone is trying to access if it is
+// Main dashboard route
 router.get("/", (req, res) => {
   if (!req.user) {
-    return res.redirect("/signin");
-  // } else if (req.user.role === "admin") {
-    // return res.redirect("/admin");
+    return res.status(401).redirect("/signin");
   } else {
     const username = req.user.username;
     const msg = req.session.msg;
@@ -19,49 +17,49 @@ router.get("/", (req, res) => {
     const role = req.user.role;
     req.session.msg = null;
     req.session.type = null;
-    return res.render("home", {role, username, msg, type});
+    return res.status(200).render("home", { role, username, msg, type });
   }
 });
 
+// Signin page route
 router.get("/signin", (req, res) => {
   const msg = req.session.msg;
   const type = req.session.type;
   req.session.msg = null;
   req.session.type = null;
-  return res.render("signin", {msg, type});
+  return res.status(200).render("signin", { msg, type });
 });
 
+// Signup page route
 router.get("/signup", (req, res) => {
   const msg = req.session.msg;
   const type = req.session.type;
   req.session.msg = null;
   req.session.type = null;
-  return res.render("signup", {msg,type});
+  return res.status(200).render("signup", { msg, type });
 });
 
 
-//LOGOUT (simply deleting the cookie and redirecting)
+// Logout route
 router.get("/logout", (req, res) => {
-  res.clearCookie("token").redirect("/");
+  res.clearCookie("token").status(200).redirect("/");
 });
 
-// SIGNUP, Creating new user here
+// Signup route
 router.post("/signup", async (req, res) => {
   const body = req.body;
-  if (!body.email){
-    req.session.msg = "Please enter valid email";
+  if (!body.email) {
+    req.session.msg = "Please enter a valid email";
     req.session.type = "error";
-    return res.redirect("/signup");
-  }
-  else if (!body.username){
-    req.session.msg = "Please enter username first";
+    return res.status(400).redirect("/signup");
+  } else if (!body.username) {
+    req.session.msg = "Please enter a username";
     req.session.type = "error";
-    return res.redirect("/signup");
-  }
-  else if (!body.password){
-    req.session.msg = "Please enter password";
+    return res.status(400).redirect("/signup");
+  } else if (!body.password) {
+    req.session.msg = "Please enter a password";
     req.session.type = "error";
-    return res.redirect("/signup");
+    return res.status(400).redirect("/signup");
   }
   try {
     // Check if username or email is already taken
@@ -74,7 +72,7 @@ router.post("/signup", async (req, res) => {
     if (existingUsers.length > 0) {
       req.session.msg = "Username or email already in use";
       req.session.type = "error";
-      return res.redirect("/signup");
+      return res.status(409).redirect("/signup");
     }
 
     // Check if there are any existing users
@@ -90,40 +88,38 @@ router.post("/signup", async (req, res) => {
       .update(body.password)
       .digest("hex");
     const query = `
-    INSERT INTO users (username, password, email, role, salt)
-    VALUES (?, ?, ?, ?, ?)
-  `;
+      INSERT INTO users (username, password, email, role, salt)
+      VALUES (?, ?, ?, ?, ?)
+    `;
     const [rows, fields] = await promisePool.query(query, [
       body.username,
       hashedPassword,
       body.email,
-      "client",
+      role,
       salt,
     ]);
 
-    req.session.msg = "User created successfully! You can login now"
+    req.session.msg = "User created successfully! You can login now";
     req.session.type = "success";
-    return res.redirect("/signin");
-
+    return res.status(201).redirect("/signin");
   } catch (error) {
-    req.session.msg = "Internal Server Error"
+    req.session.msg = "Internal Server Error";
     req.session.type = "error";
-    return res.redirect("/signup");
+    return res.status(500).redirect("/signup");
   }
 });
 
-// SIGNIN OR LOGIN, Making token for user and saving it in its cookies
+// Signin route
 router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
-  if (!email){
-    req.session.msg = "Please enter valid email";
+  if (!email) {
+    req.session.msg = "Please enter a valid email";
     req.session.type = "error";
-    return res.redirect("/signin");
-  }
-  else if (!password){
-    req.session.msg = "Please enter password";
+    return res.status(400).redirect("/signin");
+  } else if (!password) {
+    req.session.msg = "Please enter a password";
     req.session.type = "error";
-    return res.redirect("/signin");
+    return res.status(400).redirect("/signin");
   }
   const query = "SELECT * FROM `users` WHERE `email` = ?";
 
@@ -131,15 +127,13 @@ router.post("/signin", async (req, res) => {
     const [rows, fields] = await promisePool.query(query, [email]);
     const user = rows[0];
     if (!user) {
-      // throw new Error("User not found");
       req.session.msg = "User not found";
       req.session.type = "error";
-      return res.redirect("/signin");
+      return res.status(404).redirect("/signin");
     }
-    // console.log(user);
+
     const salt = user.salt;
     const hashedPassword = user.password;
-
     const userProvidedHash = createHmac("sha256", salt)
       .update(password)
       .digest("hex");
@@ -147,17 +141,16 @@ router.post("/signin", async (req, res) => {
     if (hashedPassword !== userProvidedHash) {
       req.session.msg = "Incorrect Password";
       req.session.type = "error";
-      return res.redirect("/signin");
+      return res.status(401).redirect("/signin");
     }
 
     const token = createTokenForUser(user);
-    return res.cookie("token", token).redirect("/");
+    return res.status(200).cookie("token", token).redirect("/");
   } catch (err) {
     req.session.msg = "Internal Server Error";
     req.session.type = "error";
-    return res.redirect("/signin");
+    return res.status(500).redirect("/signin");
   }
-  
 });
 
 module.exports = router;

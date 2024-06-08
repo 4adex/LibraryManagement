@@ -44,7 +44,7 @@
                 <tbody>
                     <% requests.forEach(function(request) { %>
                         <tr>
-                            <td class="table-td"><%= request.user_id %></td>
+                            <td class="table-td"><%= request.id %></td>
                             <td class="table-td"><%= request.username %></td>
                               <td class="table-td">
                                 <form action="/admin/adminrequest/accept/<%= request.id %>" method="POST">
